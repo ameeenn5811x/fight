@@ -4,62 +4,367 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0d">
 <title>FIGHT | Fight Club</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0b0b0d;color:white;font-family:Arial,sans-serif}
-header{padding:22px 20px;border-bottom:1px solid #292929;display:flex;justify-content:space-between;align-items:center}
+body{
+ margin:0;background:#0b0b0d;color:white;
+ font-family:Arial,sans-serif;
+ padding-bottom:95px
+}
+header{
+ padding:22px 20px;border-bottom:1px solid #292929;
+ display:flex;justify-content:space-between;align-items:center;
+ position:sticky;top:0;background:#0b0b0d;z-index:5
+}
 .logo{font-size:25px;font-weight:900;letter-spacing:6px}
 .logo span{color:#ed003c}
-main{padding:25px 18px 100px}
+main{padding:25px 18px}
 small{color:#ed003c;letter-spacing:3px;font-weight:bold}
-h1{font-size:38px;margin:12px 0}
+h1{font-size:36px;margin:12px 0}
+h2{font-size:23px}
 p{color:#999;line-height:1.6}
-.card{background:#19191c;border:1px solid #303034;border-radius:20px;padding:22px;margin:20px 0}
+.card{
+ background:#19191c;border:1px solid #303034;
+ border-radius:25px;padding:25px;margin:20px 0
+}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.number{font-size:36px;color:#ed003c;font-weight:bold}
-button{border:0;border-radius:12px;padding:17px;background:#ed003c;color:white;font-weight:bold;width:100%;font-size:15px}
-nav{position:fixed;bottom:0;left:0;right:0;background:#080808;border-top:1px solid #333;display:flex;justify-content:space-around;padding:17px 4px;color:#e4bd00}
-nav span{text-align:center;font-size:12px}
-nav b{display:block;font-size:20px;margin-bottom:5px}
+.stats .card{margin:12px 0;min-height:155px}
+.number{font-size:38px;color:#ed003c;font-weight:bold;margin-top:25px}
+button{
+ border:0;border-radius:13px;padding:16px;
+ background:#ed003c;color:white;font-weight:bold;
+ width:100%;font-size:15px;cursor:pointer
+}
+button:active{transform:scale(.98)}
+.secondary{
+ background:#29292d;border:1px solid #444;color:white;
+ margin-top:10px
+}
+.session{
+ border:1px solid #333;background:#19191c;
+ padding:18px;border-radius:18px;margin:15px 0
+}
+.session p{margin:8px 0}
+.tag{color:#ed003c;font-size:12px;font-weight:bold}
+.page{display:none}
+.page.active{display:block}
+input,select{
+ width:100%;padding:15px;margin:8px 0 18px;
+ border:1px solid #444;border-radius:12px;
+ background:#101012;color:white;font-size:16px
+}
+label{color:#bbb;font-size:14px}
+nav{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#080808;border-top:1px solid #333;
+ display:flex;justify-content:space-around;
+ padding:12px 2px 15px;z-index:10
+}
+nav button{
+ background:none;color:#d8b600;
+ padding:5px 2px;width:20%;font-size:11px;
+ font-weight:normal;border-radius:0
+}
+nav button b{display:block;font-size:22px;margin-bottom:5px}
+nav button.active{color:#ed003c}
+.empty{text-align:center;padding:25px;color:#999}
+footer{text-align:center;color:#666;font-size:11px;padding:25px}
 </style>
 </head>
+
 <body>
+
 <header>
-<div class="logo">F<span>I</span>GHT</div>
-<div>🔔</div>
+ <div class="logo">F<span>I</span>GHT</div>
+ <div>🥊</div>
 </header>
+
 <main>
-<small>WELCOME, FIGHTER</small>
-<h1>YOUR FIGHT.<br>YOUR JOURNEY.</h1>
-<p>Discipline is the bridge between goals and accomplishment.</p>
 
-<div class="card">
-<small>YOUR TRAINING</small>
-<h2>Ready to train?</h2>
-<p>Book your next training session and keep progressing.</p>
-<button onclick="alert('Session booking coming soon!')">BOOK A SESSION →</button>
-</div>
+<!-- HOME -->
+<section id="home" class="page active">
+ <small>WELCOME, FIGHTER</small>
+ <h1>YOUR FIGHT.<br>YOUR JOURNEY.</h1>
+ <p>Discipline is the bridge between goals and accomplishment.</p>
 
-<div class="stats">
-<div class="card"><p>SESSIONS</p><div class="number">00</div></div>
-<div class="card"><p>FIGHT COINS</p><div class="number">00</div></div>
-<div class="card"><p>TRIALS LEFT</p><div class="number">02</div></div>
-<div class="card"><p>TRAINING DAYS</p><div class="number">00</div></div>
-</div>
+ <div class="card">
+  <small>YOUR TRAINING</small>
+  <h2>Ready to train?</h2>
+  <p>Book your next training session and keep progressing.</p>
+  <button onclick="showPage('sessions')">BOOK A SESSION →</button>
+ </div>
 
-<div class="card">
-<small>THE FIGHT METHOD</small>
-<h2>TRAIN HARDER.</h2>
-<p>Striking · Kicking · Grappling · Conditioning</p>
-</div>
+ <div class="stats">
+  <div class="card">
+   <p>SESSIONS</p>
+   <div class="number" id="homeSessions">00</div>
+  </div>
+  <div class="card">
+   <p>FIGHT COINS</p>
+   <div class="number" id="homeCoins">00</div>
+  </div>
+  <div class="card">
+   <p>TRIALS LEFT</p>
+   <div class="number">02</div>
+  </div>
+  <div class="card">
+   <p>TRAINING DAYS</p>
+   <div class="number" id="homeDays">00</div>
+  </div>
+ </div>
+
+ <div class="card">
+  <small>THE FIGHT METHOD</small>
+  <h2>TRAIN HARDER.</h2>
+  <p>Striking · Kicking · Grappling · Conditioning</p>
+ </div>
+</section>
+
+<!-- SESSIONS -->
+<section id="sessions" class="page">
+ <small>YOUR TRAINING</small>
+ <h1>SESSIONS.</h1>
+ <p>Choose a training session to book.</p>
+
+ <div class="session">
+  <span class="tag">BEGINNER</span>
+  <h2>Boxing Basics</h2>
+  <p>Learn basic boxing techniques and footwork.</p>
+  <p>Duration: 60 minutes</p>
+  <button onclick="bookSession('Boxing Basics')">BOOK SESSION →</button>
+ </div>
+
+ <div class="session">
+  <span class="tag">ALL LEVELS</span>
+  <h2>Kickboxing</h2>
+  <p>Improve your striking and coordination.</p>
+  <p>Duration: 60 minutes</p>
+  <button onclick="bookSession('Kickboxing')">BOOK SESSION →</button>
+ </div>
+
+ <div class="session">
+  <span class="tag">FITNESS</span>
+  <h2>Strength & Conditioning</h2>
+  <p>Build fitness, strength and endurance.</p>
+  <p>Duration: 45 minutes</p>
+  <button onclick="bookSession('Strength & Conditioning')">BOOK SESSION →</button>
+ </div>
+
+ <div class="card">
+  <small>MY BOOKINGS</small>
+  <div id="myBookings" class="empty">No sessions booked yet.</div>
+ </div>
+</section>
+
+<!-- EVOLVE -->
+<section id="evolve" class="page">
+ <small>YOUR JOURNEY</small>
+ <h1>EVOLVE.</h1>
+ <p>Every training session is a step forward.</p>
+
+ <div class="card">
+  <small>FIGHT COINS</small>
+  <div class="number" id="evolveCoins">00</div>
+  <p>Keep training to earn rewards.</p>
+ </div>
+
+ <div class="card">
+  <small>TRAINING RECORD</small>
+  <h2 id="evolveSessions">00 Sessions</h2>
+  <p>Sessions booked on this device.</p>
+ </div>
+
+ <div class="card">
+  <small>YOUR MINDSET</small>
+  <h2>NEVER GIVE UP.</h2>
+  <p>Consistency builds progress. Keep moving forward.</p>
+ </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop" class="page">
+ <small>FIGHT CLUB STORE</small>
+ <h1>THE SHOP.</h1>
+ <p>Explore our club merchandise.</p>
+
+ <div class="session">
+  <h2>🥊 Boxing Gloves</h2>
+  <p>Training equipment</p>
+  <button onclick="shopMessage('Boxing Gloves')">VIEW PRODUCT</button>
+ </div>
+
+ <div class="session">
+  <h2>👕 FIGHT T-Shirt</h2>
+  <p>Official club merchandise</p>
+  <button onclick="shopMessage('FIGHT T-Shirt')">VIEW PRODUCT</button>
+ </div>
+
+ <div class="session">
+  <h2>🎒 Training Bag</h2>
+  <p>Carry your training essentials</p>
+  <button onclick="shopMessage('Training Bag')">VIEW PRODUCT</button>
+ </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+ <small>FIGHTER ACCOUNT</small>
+ <h1>MY PROFILE.</h1>
+ <p>Enter your details and save your profile on this device.</p>
+
+ <div class="card">
+  <form onsubmit="saveProfile(event)">
+   <label>Full name</label>
+   <input id="memberName" type="text" placeholder="Enter your name" required>
+
+   <label>Email address</label>
+   <input id="memberEmail" type="email" placeholder="Enter your email">
+
+   <label>Phone number</label>
+   <input id="memberPhone" type="tel" placeholder="Enter your phone number">
+
+   <label>Training level</label>
+   <select id="memberLevel">
+    <option>Beginner</option>
+    <option>Intermediate</option>
+    <option>Advanced</option>
+   </select>
+
+   <button type="submit">SAVE PROFILE</button>
+  </form>
+  <p id="profileMessage"></p>
+ </div>
+
+ <div class="card">
+  <small>MEMBERSHIP</small>
+  <h2>MEMBERSHIP DETAILS</h2>
+  <p>Your membership information will appear here when club membership management is connected.</p>
+ </div>
+</section>
+
+<footer>FIGHT © 2026 · TRAIN HARDER.</footer>
+
 </main>
+
+<!-- BOTTOM NAVIGATION -->
 <nav>
-<span><b>⌂</b>HOME</span>
-<span><b>▦</b>SESSIONS</span>
-<span><b>↗</b>EVOLVE</span>
-<span><b>▢</b>SHOP</span>
-<span><b>♙</b>PROFILE</span>
+ <button class="active" data-page="home" onclick="showPage('home')">
+  <b>⌂</b>HOME
+ </button>
+ <button data-page="sessions" onclick="showPage('sessions')">
+  <b>▦</b>SESSIONS
+ </button>
+ <button data-page="evolve" onclick="showPage('evolve')">
+  <b>↗</b>EVOLVE
+ </button>
+ <button data-page="shop" onclick="showPage('shop')">
+  <b>▢</b>SHOP
+ </button>
+ <button data-page="profile" onclick="showPage('profile')">
+  <b>♙</b>PROFILE
+ </button>
 </nav>
+
+<script>
+function showPage(pageName){
+ document.querySelectorAll('.page').forEach(page=>{
+  page.classList.remove('active');
+ });
+ document.getElementById(pageName).classList.add('active');
+
+ document.querySelectorAll('nav button').forEach(button=>{
+  button.classList.toggle('active',button.dataset.page===pageName);
+ });
+
+ window.scrollTo(0,0);
+}
+
+function getBookings(){
+ return JSON.parse(localStorage.getItem('fightBookings')||'[]');
+}
+
+function bookSession(name){
+ let bookings=getBookings();
+
+ if(bookings.includes(name)){
+  alert('You have already booked this session on this device.');
+  return;
+ }
+
+ bookings.push(name);
+ localStorage.setItem('fightBookings',JSON.stringify(bookings));
+ updateDashboard();
+ alert(name+' added to your demo bookings!');
+}
+
+function updateDashboard(){
+ let bookings=getBookings();
+ let count=bookings.length;
+ let coins=count*10;
+
+ document.getElementById('homeSessions').textContent=
+  String(count).padStart(2,'0');
+
+ document.getElementById('homeCoins').textContent=
+  String(coins).padStart(2,'0');
+
+ document.getElementById('evolveCoins').textContent=
+  String(coins).padStart(2,'0');
+
+ document.getElementById('evolveSessions').textContent=
+  count+' Sessions';
+
+ document.getElementById('homeDays').textContent=
+  String(count).padStart(2,'0');
+
+ let bookingArea=document.getElementById('myBookings');
+
+ if(count===0){
+  bookingArea.textContent='No sessions booked yet.';
+ }else{
+  bookingArea.innerHTML=bookings.map(name=>
+   '<p>🥊 '+name+'</p>'
+  ).join('');
+ }
+}
+
+function saveProfile(event){
+ event.preventDefault();
+
+ let profile={
+  name:document.getElementById('memberName').value,
+  email:document.getElementById('memberEmail').value,
+  phone:document.getElementById('memberPhone').value,
+  level:document.getElementById('memberLevel').value
+ };
+
+ localStorage.setItem('fightProfile',JSON.stringify(profile));
+ document.getElementById('profileMessage').textContent=
+  'Profile saved on this device!';
+}
+
+function loadProfile(){
+ let profile=JSON.parse(localStorage.getItem('fightProfile')||'null');
+
+ if(profile){
+  document.getElementById('memberName').value=profile.name||'';
+  document.getElementById('memberEmail').value=profile.email||'';
+  document.getElementById('memberPhone').value=profile.phone||'';
+  document.getElementById('memberLevel').value=profile.level||'Beginner';
+ }
+}
+
+function shopMessage(product){
+ alert(product+' details and shopping will be available in a future update.');
+}
+
+updateDashboard();
+loadProfile();
+</script>
+
 </body>
 </html>
+
