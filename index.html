@@ -153,13 +153,47 @@ footer{text-align:center;color:#555;padding:25px;font-size:12px}
   <p style="text-align:center;margin-top:25px;font-size:11px">FIGHT CLUB · V1.0.0</p>
 </section>
 
+
 <section id="register" class="section">
-<h2>Join FIGHT</h2>
-<p>Demo registration. Real phone OTP will be connected securely later.</p>
-<input id="nameInput" placeholder="Full name">
-<input id="userInput" placeholder="Choose username">
-<input id="phoneInput" placeholder="Phone number" type="tel">
-<button class="action" onclick="register()">Create Demo Profile</button>
+  <div style="text-align:center;padding:25px 10px">
+    <div class="logo">FIGHT</div>
+    <h1 id="regTitle">WELCOME TO FIGHT</h1>
+    <p id="regSubtitle">Enter your phone number to get started.</p>
+  </div>
+
+  <div id="regPhone">
+    <h2>Phone Number</h2>
+    <input id="regPhoneInput" type="tel" placeholder="Enter phone number">
+    <button class="action" onclick="sendDemoOTP()">CONTINUE</button>
+  </div>
+
+  <div id="regOTP" style="display:none">
+    <h2>Verify Number</h2>
+    <p>Enter the demo verification code: 123456</p>
+    <input id="regOTPInput" type="text" maxlength="6" placeholder="Enter 6-digit code">
+    <button class="action" onclick="verifyDemoOTP()">VERIFY</button>
+  </div>
+
+  <div id="regDOB" style="display:none">
+    <h2>About You</h2>
+    <label>Date of Birth</label>
+    <input id="regDOBInput" type="date">
+    <label>Gender</label>
+    <select id="regGender">
+      <option value="">Select gender</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Prefer not to say</option>
+    </select>
+    <button class="action" onclick="nextDemoDetails()">CONTINUE</button>
+  </div>
+
+  <div id="regDetails" style="display:none">
+    <h2>Your Details</h2>
+    <input id="nameInput" placeholder="Full name">
+    <input id="userInput" placeholder="Choose username">
+    <button class="action" onclick="finishDemoRegistration()">CREATE PROFILE</button>
+  </div>
 </section>
 </main>
 
@@ -175,6 +209,62 @@ footer{text-align:center;color:#555;padding:25px;font-size:12px}
 <footer>FIGHT · TRAIN. IMPROVE. EVOLVE.</footer>
 
 <script>
+
+function sendDemoOTP(){
+  const phone = document.getElementById('regPhoneInput').value.trim();
+  if(!/^[0-9]{10}$/.test(phone)){
+    alert('Enter a valid 10-digit phone number');
+    return;
+  }
+  document.getElementById('regPhone').style.display='none';
+  document.getElementById('regOTP').style.display='block';
+  alert('Demo OTP: 123456');
+}
+
+function verifyDemoOTP(){
+  if(document.getElementById('regOTPInput').value !== '123456'){
+    alert('Incorrect demo OTP');
+    return;
+  }
+  document.getElementById('regOTP').style.display='none';
+  document.getElementById('regDOB').style.display='block';
+}
+
+function nextDemoDetails(){
+  const dob = document.getElementById('regDOBInput').value;
+  const gender = document.getElementById('regGender').value;
+  if(!dob || !gender){
+    alert('Please enter your date of birth and gender');
+    return;
+  }
+  if(new Date(dob) >= new Date()){
+    alert('Please enter a valid date of birth');
+    return;
+  }
+  localStorage.setItem('fightDOB',dob);
+  localStorage.setItem('fightGender',gender);
+  document.getElementById('regDOB').style.display='none';
+  document.getElementById('regDetails').style.display='block';
+}
+
+function finishDemoRegistration(){
+  const name = document.getElementById('nameInput').value.trim();
+  const username = document.getElementById('userInput').value.trim();
+  const phone = document.getElementById('regPhoneInput').value.trim();
+
+  if(!name || !username){
+    alert('Please enter your name and username');
+    return;
+  }
+
+  localStorage.setItem('fightName',name);
+  localStorage.setItem('fightUser',username);
+  localStorage.setItem('fightPhone',phone);
+
+  loadProfile();
+  show('home');
+  alert('Welcome to FIGHT!');
+}
 function show(page){
 document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
 document.getElementById(page).classList.add('active');
